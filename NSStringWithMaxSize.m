@@ -8,6 +8,7 @@
 #import "NSStringWithMaxSize.h"
 
 @implementation NSStringWithMaxSize
+@synthesize maxWidth, defaultFont, sufix;
 
 + (NSString *) removeExtraFromString: (NSString *) string withMaxWidth: (float) maxWidth{
     return [self removeExtraFromString:string withMaxWidth:maxWidth andFont: [UIFont boldSystemFontOfSize:18]];
@@ -18,14 +19,22 @@
 }
 
 + (NSString *) removeExtraFromString: (NSString *) string withMaxWidth: (float) maxWidth andFont: (UIFont *) font sufixIfNeeded: (NSString *) sufix{
-    float maxWidthMinusDots = maxWidth - [sufix sizeWithFont:font].width;
+    NSStringWithMaxSize *stringWithMaxSize = [[NSStringWithMaxSize alloc] init];
+    stringWithMaxSize.maxWidth = maxWidth;
+    stringWithMaxSize.defaultFont = font;
+    stringWithMaxSize.sufix = sufix;
+    return [stringWithMaxSize removeExtraFromString:string];    
+}
+
+- (NSString *) removeExtraFromString: (NSString *) string{
+    float maxWidthMinusDots = maxWidth - [sufix sizeWithFont:defaultFont].width;
     
-    if([string sizeWithFont:font].width < maxWidthMinusDots)
+    if([string sizeWithFont:defaultFont].width < maxWidthMinusDots)
         return string;
     
     NSMutableString *newString = [[NSMutableString alloc] init];
     int currentLetter = 0;
-    while([newString sizeWithFont:font].width < maxWidthMinusDots){
+    while([newString sizeWithFont:defaultFont].width < maxWidthMinusDots){
         [newString appendString:[string substringWithRange:NSMakeRange(currentLetter, 1)]];
         currentLetter++;
     }
