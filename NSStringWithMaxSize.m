@@ -1,6 +1,5 @@
 //
 //  NSStringWithMaxSize.m
-//  Busao
 //
 //  Created by Diego Chohfi on 4/9/12.
 //  Copyright (c) 2012 None. All rights reserved.
